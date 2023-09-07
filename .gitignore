@@ -1,6 +1,7 @@
 #Inserted by me
 digit_model.h5
 digit_model.keras
+data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
