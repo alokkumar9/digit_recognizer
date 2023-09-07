@@ -1,7 +1,12 @@
+#Inserted by me
+digit_model.h5
+digit_model.keras
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
 
 # C extensions
 *.so
