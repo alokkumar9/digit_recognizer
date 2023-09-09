@@ -47,4 +47,4 @@ def predict(img):
     return int(prediction)
 
 gr.Interface(fn= predict, inputs = "sketchpad", outputs ="label").launch()
-
+#working on hface
