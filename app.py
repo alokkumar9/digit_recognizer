@@ -1,5 +1,5 @@
-#import gradio as gr 
-import streamlit as st
+import gradio as gr 
+#import streamlit as st
 from sklearn.neural_network import MLPClassifier 
 import torchvision.datasets as datasets 
 import seaborn as sns 
@@ -15,5 +15,5 @@ def predict(img):
     prediction = loaded_model.predict(img)[0]
     return int(prediction)
 
-#gr.Interface(fn= predict, inputs = "sketchpad", outputs ="label").launch()
+gr.Interface(fn= predict, inputs = "sketchpad", outputs ="label").launch()
 
