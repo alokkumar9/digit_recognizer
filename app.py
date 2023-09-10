@@ -29,7 +29,7 @@ X_train = X_train.reshape(60000, 784)/255.0
 X_test = X_test.reshape(10000, 784)/255.0
 
 #train the model 
-mlp = MLPClassifier(hidden_layer_sizes=(32,32))
+mlp = MLPClassifier(hidden_layer_sizes=(50,50))
 mlp.fit(X_train, y_train)
 
 #print the accuracies 
