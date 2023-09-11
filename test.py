@@ -50,12 +50,7 @@ def predict_digit(img):
 
         loaded_model = keras.models.load_model('keras_digit_temp.h5')
     
-        simple = pd.DataFrame(
-        {
-        "a": ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
-        "b": [28, 55, 43, 91, 81, 53, 19, 87, 52],
-        }
-        )
+        
         img_3d=img.reshape(-1,28,28)
         img_resized=img_3d/255.0
         pred_prob=loaded_model.predict(img_resized)
@@ -76,9 +71,25 @@ def predict_digit(img):
 
         # print(prob2) 
 
-    
+        simple = pd.DataFrame(
+        {
+        "a": ["0", "1", "2", "3", "4", "5", "6", "7", "8","9"],
+        "b": pred_prob[0], #[28, 55, 43, 91, 81, 53, 19, 87, 52,80],
+        }
+        )
+
         predicted_val=np.argmax(pred_prob)
-        return int(predicted_val)
+        return int(predicted_val), gr.BarPlot.update(
+            simple,
+            x="a",
+            y="b",
+            x_title="Digits",
+            y_title="Identification Probabilities",
+            title="Identification Probability",
+            tooltip=["a", "b"],
+            vertical=False,
+            y_lim=[0, 100],
+        )
         
     else:
         return " "
@@ -107,8 +118,8 @@ with gr.Blocks() as demo:
             gr.Markdown("Identified digit")
             label=gr.Label("")
             gr.Markdown("Other possible values")
-            #bar=gr.BarPlot("Probability")
-    btn.click(predict_digit,inputs=skch,outputs=label)
+            bar = gr.BarPlot()
+    btn.click(predict_digit,inputs=skch,outputs=[label,bar])
 
            
         
