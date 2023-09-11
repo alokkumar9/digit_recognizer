@@ -92,18 +92,46 @@ def predict_digit(img):
         )
         
     else:
-        return " "
+        simple_empty = pd.DataFrame(
+        {
+        "a": ["0", "1", "2", "3", "4", "5", "6", "7", "8","9"],
+        "b": [0,0,0,0,0,0,0,0,0,0], #[28, 55, 43, 91, 81, 53, 19, 87, 52,80],
+        }
+        )
+
+        return " ", gr.BarPlot.update(
+            simple_empty,
+            x="a",
+            y="b",
+            x_title="Digits",
+            y_title="Identification Probabilities",
+            title="Identification Probability",
+            tooltip=["a", "b"],
+            vertical=False,
+            y_lim=[0, 100],
+        )
         
 
 # iface=gr.Interface(prdict_digit, inputs='sketchpad', outputs=['label', gr.Slider(0,100, label='Probably 0'), gr.Slider(0,100, label='Probably 1')] ).launch()
 
 # iface.launch(debug='true')
 
-with gr.Blocks() as demo:
+css='''
+#title_head{
+text-align: center;
+text-weight: bold;
+text-size:30px;
+}
+#name_head{
+text-align: center;
+}
+'''
+
+with gr.Blocks(css=css) as demo:
     with gr.Row():
         with gr.Column():
-            gr.Markdown("Digit Identify", elem_id='title_head')
-            gr.Markdown("By Alok")
+            gr.Markdown("<h1>Digit Identifier</h1>", elem_id='title_head')
+            gr.Markdown("<h2>By Alok</h2>", elem_id="name_head")
     with gr.Row():
         with gr.Column():
             with gr.Row():
