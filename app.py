@@ -2,27 +2,85 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras import layers
 import matplotlib.pyplot as plt
 import gradio as gr
 import numpy as np
 import pandas as pd
+from PIL import Image as im
+import PIL 
 #%matplotlib inline
-
+num_classes = 10
+input_shape = (28, 28, 1)
 
 objt=tf.keras.datasets.mnist
 (X_train, y_train), (X_test,y_test)=objt.load_data()
 
-print(X_train.shape)
 
-print(y_train)
+# X_train = X_train.astype("float32") / 255
+# X_test = X_test.astype("float32") / 255
+# # Make sure images have shape (28, 28, 1)
+# X_train = np.expand_dims(X_train, -1)
+# X_test = np.expand_dims(X_test, -1)
+# print("x_train shape:", X_train.shape)
+# print(X_train.shape[0], "train samples")
+# print(X_test.shape[0], "test samples")
+
+
+# # convert class vectors to binary class matrices
+# y_train = keras.utils.to_categorical(y_train, num_classes)
+# y_test = keras.utils.to_categorical(y_test, num_classes)
+
+# X_new=np.concatenate((X_train, X_test))
+# y_new=np.concatenate((y_train, y_test))
+# print(X_train.shape)
+# print(X_new.shape)
+# print(y_new.shape)
+
+# print(y_train)
+
+# model = keras.Sequential(
+#     [
+#         keras.Input(shape=input_shape),
+#         layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+#         layers.MaxPooling2D(pool_size=(2, 2)),
+#         layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+#         layers.MaxPooling2D(pool_size=(2, 2)),
+#         layers.Flatten(),
+#         layers.Dropout(0.5),
+#         layers.Dense(num_classes, activation="softmax"),
+#     ]
+# )
+
+# model.summary()
+
+# batch_size = 128
+# epochs = 15
+
+# model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+# model.fit(X_new, y_new, batch_size=batch_size, epochs=epochs, validation_split=0.1)
+# model.save("keras_digit_test_include.h5")
+
+# score = model.evaluate(X_test, y_test, verbose=0)
+# print("Test loss:", score[0])
+# print("Test accuracy:", score[1])
+
+# loaded_model = keras.models.load_model('keras_digit_accurate.h5')
+# score = loaded_model.evaluate(X_test, y_test, verbose=0)
+# print("Test loss:", score[0])
+# print("Test accuracy:", score[1])
+
+#................................................................................................
+
 
 # for i in range(9):
 #     plt.subplot(330+1+i)
 #     plt.imshow(X_train[i])
 #     plt.show()
 
-X_train=X_train/255.0
-X_test=X_test/255.0
+# X_train=X_train/255.0
+# X_test=X_test/255.0
 
 # model=tf.keras.models.Sequential([Flatten(input_shape=(28,28)),
                                         
@@ -45,36 +103,30 @@ X_test=X_test/255.0
 # predicted=model.predict(test)
 # print(predicted)
 
+#count=0
+
 def predict_digit(img):
     if img is not None:
 
-        loaded_model = keras.models.load_model('keras_digit_temp.h5')
-    
+        loaded_model = keras.models.load_model('keras_digit_test_include.h5')
+
         
+        #img_data = im.fromarray(img)
+        #img_data.save(f"image1.jpg")
+        #count=count+1
         img_3d=img.reshape(-1,28,28)
         img_resized=img_3d/255.0
         pred_prob=loaded_model.predict(img_resized)
-    
+
         pred_prob=pred_prob*100
 
         print((pred_prob))
-        # prob0= 100*pred_prob[0]
-        # prob1= 100*pred_prob[1]
-        # prob2= 100*pred_prob[2]
-        # prob3= 100*pred_prob[3]
-        # prob4= 100*pred_prob[4]
-        # prob5= 100*pred_prob[5]
-        # prob6= 100*pred_prob[6]
-        # prob7= 100*pred_prob[7]
-        # prob8= 100*pred_prob[8]
-        # prob9= 100*pred_prob[9]
-
-        # print(prob2) 
+        
 
         simple = pd.DataFrame(
         {
         "a": ["0", "1", "2", "3", "4", "5", "6", "7", "8","9"],
-        "b": pred_prob[0], #[28, 55, 43, 91, 81, 53, 19, 87, 52,80],
+        "b": pred_prob[0], 
         }
         )
 
@@ -95,7 +147,7 @@ def predict_digit(img):
         simple_empty = pd.DataFrame(
         {
         "a": ["0", "1", "2", "3", "4", "5", "6", "7", "8","9"],
-        "b": [0,0,0,0,0,0,0,0,0,0], #[28, 55, 43, 91, 81, 53, 19, 87, 52,80],
+        "b": [0,0,0,0,0,0,0,0,0,0],
         }
         )
 
@@ -109,6 +161,7 @@ def predict_digit(img):
             tooltip=["a", "b"],
             vertical=False,
             y_lim=[0, 100],
+            
         )
         
 
